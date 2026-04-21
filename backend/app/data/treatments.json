@@ -1,0 +1,448 @@
+{
+  "cassava": {
+    "CBB": {
+      "name": "Cassava Bacterial Blight",
+      "fullName": "Cassava Bacterial Blight (CBB)",
+      "severity": "high",
+      "description": "A bacterial disease causing leaf spots, wilting, and stem rot. Can lead to complete plant death if untreated.",
+      "symptoms": [
+        "Angular leaf spots with yellow halos",
+        "Wilting of leaves starting from tips",
+        "Brown streaks on stems",
+        "Gum exudation from stems",
+        "Dieback of shoots"
+      ],
+      "treatments": [
+        {
+          "method": "Remove and Destroy Infected Plants",
+          "priority": "immediate",
+          "details": "Uproot and burn all infected plants to prevent spread. Do not compost.",
+          "timing": "As soon as symptoms appear"
+        },
+        {
+          "method": "Use Disease-Free Planting Material",
+          "priority": "high",
+          "details": "Source certified, disease-free stem cuttings from trusted suppliers",
+          "timing": "Before planting season"
+        },
+        {
+          "method": "Apply Copper-Based Bactericides",
+          "priority": "medium",
+          "details": "Spray copper oxychloride or copper hydroxide on healthy plants near infected areas",
+          "timing": "Weekly for 3-4 weeks"
+        },
+        {
+          "method": "Practice Crop Rotation",
+          "priority": "medium",
+          "details": "Rotate with non-host crops for at least 2 seasons",
+          "timing": "Next planting season"
+        }
+      ],
+      "prevention": [
+        "Use resistant cassava varieties",
+        "Maintain proper plant spacing (1m x 1m)",
+        "Avoid overhead irrigation",
+        "Disinfect tools between plants (10% bleach solution)",
+        "Remove volunteer cassava plants"
+      ],
+      "costEstimate": "₦5,000 - ₦15,000 per hectare",
+      "effectiveness": "75-85%",
+      "timeToRecovery": "Not recoverable - prevent spread to healthy plants"
+    },
+    "CBSD": {
+      "name": "Cassava Brown Streak Disease",
+      "fullName": "Cassava Brown Streak Disease (CBSD)",
+      "severity": "very high",
+      "description": "A viral disease transmitted by whiteflies, causing brown streaks in stems and roots, making tubers unmarketable.",
+      "symptoms": [
+        "Brown streaks on stems",
+        "Yellow chlorotic blotches on leaves",
+        "Brown necrotic patches in tuber flesh",
+        "Leaf yellowing and curling",
+        "Stunted plant growth"
+      ],
+      "treatments": [
+        {
+          "method": "Remove Infected Plants Immediately",
+          "priority": "critical",
+          "details": "Uproot and destroy infected plants within 24-48 hours of detection",
+          "timing": "Immediately upon detection"
+        },
+        {
+          "method": "Control Whitefly Vectors",
+          "priority": "high",
+          "details": "Apply imidacloprid or thiamethoxam insecticides to control whitefly population",
+          "timing": "Every 2 weeks during growing season"
+        },
+        {
+          "method": "Use Virus-Tested Planting Material",
+          "priority": "critical",
+          "details": "Only use certified CBSD-free stem cuttings from accredited sources",
+          "timing": "Before planting"
+        },
+        {
+          "method": "Implement Roguing",
+          "priority": "high",
+          "details": "Regular field inspections and removal of symptomatic plants",
+          "timing": "Weekly inspections"
+        }
+      ],
+      "prevention": [
+        "Plant CBSD-resistant varieties (e.g., Mkumba, Kiroba)",
+        "Control whitefly populations",
+        "Use clean planting materials only",
+        "Maintain 3-month fallow period between crops",
+        "Remove cassava debris after harvest"
+      ],
+      "costEstimate": "₦10,000 - ₦25,000 per hectare",
+      "effectiveness": "60-70% (prevention focused)",
+      "timeToRecovery": "No cure - focus on prevention"
+    },
+    "CGM": {
+      "name": "Cassava Green Mottle",
+      "fullName": "Cassava Green Mottle (CGM)",
+      "severity": "medium",
+      "description": "A viral disease causing mottled green patterns on leaves, reducing photosynthesis and yield.",
+      "symptoms": [
+        "Light and dark green mosaic patterns on leaves",
+        "Leaf distortion and puckering",
+        "Reduced leaf size",
+        "Mild stunting",
+        "Lower tuber yields"
+      ],
+      "treatments": [
+        {
+          "method": "Remove Symptomatic Plants",
+          "priority": "medium",
+          "details": "Remove and destroy plants showing severe symptoms",
+          "timing": "During regular field inspections"
+        },
+        {
+          "method": "Control Insect Vectors",
+          "priority": "medium",
+          "details": "Apply systemic insecticides to control whiteflies and other vectors",
+          "timing": "Monthly during growing season"
+        },
+        {
+          "method": "Use Healthy Planting Material",
+          "priority": "high",
+          "details": "Select cuttings from healthy, disease-free mother plants",
+          "timing": "Before planting"
+        }
+      ],
+      "prevention": [
+        "Use virus-indexed planting material",
+        "Control whitefly and aphid populations",
+        "Remove alternate host plants nearby",
+        "Maintain proper field sanitation",
+        "Monitor fields regularly"
+      ],
+      "costEstimate": "₦3,000 - ₦10,000 per hectare",
+      "effectiveness": "70-80%",
+      "timeToRecovery": "No recovery - manage to prevent spread"
+    },
+    "CMD": {
+      "name": "Cassava Mosaic Disease",
+      "fullName": "Cassava Mosaic Disease (CMD)",
+      "severity": "very high",
+      "description": "The most widespread and damaging cassava disease in Africa, transmitted by whiteflies, causing severe yield losses.",
+      "symptoms": [
+        "Yellow and green mosaic patterns on leaves",
+        "Severe leaf distortion and curling",
+        "Stunted plant growth (up to 50% reduction)",
+        "Twisted and malformed leaves",
+        "Reduced and deformed tubers"
+      ],
+      "treatments": [
+        {
+          "method": "Immediate Plant Removal",
+          "priority": "critical",
+          "details": "Remove and burn all infected plants to stop virus spread",
+          "timing": "Within 24 hours of detection"
+        },
+        {
+          "method": "Whitefly Control",
+          "priority": "high",
+          "details": "Apply neem-based or synthetic insecticides (imidacloprid) to control whitefly vectors",
+          "timing": "Bi-weekly applications"
+        },
+        {
+          "method": "Use CMD-Resistant Varieties",
+          "priority": "critical",
+          "details": "Replant with resistant varieties like TMS30572, TME204, or local resistant cultivars",
+          "timing": "Next planting season"
+        },
+        {
+          "method": "Field Sanitation",
+          "priority": "high",
+          "details": "Remove all cassava debris and volunteer plants from field",
+          "timing": "After harvest"
+        }
+      ],
+      "prevention": [
+        "Plant CMD-resistant cassava varieties",
+        "Use virus-free planting material",
+        "Control whitefly populations aggressively",
+        "Remove infected plants early (within first 2 months)",
+        "Maintain isolation from other cassava fields (100m minimum)",
+        "Avoid planting near infected fields"
+      ],
+      "costEstimate": "₦8,000 - ₦20,000 per hectare",
+      "effectiveness": "80-90% (with resistant varieties)",
+      "timeToRecovery": "No cure - prevention is key"
+    },
+    "Healthy": {
+      "name": "Healthy Cassava",
+      "fullName": "Healthy Cassava Plant",
+      "severity": "none",
+      "description": "Your cassava plant appears healthy with no signs of disease. Continue good agricultural practices.",
+      "symptoms": [
+        "Uniform green leaves",
+        "Normal growth and development",
+        "No spots, streaks, or discoloration",
+        "Healthy root development"
+      ],
+      "treatments": [],
+      "prevention": [
+        "Continue regular field monitoring",
+        "Maintain proper spacing and nutrition",
+        "Control weeds regularly",
+        "Monitor for early signs of disease",
+        "Use certified planting material in future",
+        "Practice crop rotation"
+      ],
+      "costEstimate": "₦0",
+      "effectiveness": "100%",
+      "recommendation": "Maintain current good practices. Monitor weekly for any disease symptoms."
+    }
+  },
+  "tomato": {
+    "Tomato___Bacterial_spot": {
+      "name": "Bacterial Spot",
+      "fullName": "Tomato Bacterial Spot",
+      "severity": "high",
+      "description": "A bacterial disease causing leaf spots and fruit lesions, reducing marketability and yield.",
+      "symptoms": [
+        "Small dark spots on leaves with yellow halos",
+        "Raised brown spots on fruits",
+        "Leaf yellowing and drop",
+        "Defoliation in severe cases",
+        "Reduced fruit quality"
+      ],
+      "treatments": [
+        {
+          "method": "Apply Copper-Based Bactericides",
+          "priority": "high",
+          "details": "Spray copper hydroxide or copper oxychloride every 7-10 days",
+          "timing": "Start at first sign of disease"
+        },
+        {
+          "method": "Remove Infected Plant Parts",
+          "priority": "high",
+          "details": "Prune and destroy infected leaves and fruits",
+          "timing": "Weekly during infection period"
+        },
+        {
+          "method": "Improve Air Circulation",
+          "priority": "medium",
+          "details": "Increase plant spacing and prune lower leaves",
+          "timing": "Ongoing maintenance"
+        },
+        {
+          "method": "Use Disease-Free Seeds",
+          "priority": "critical",
+          "details": "Purchase certified pathogen-free seeds or transplants",
+          "timing": "Before planting"
+        }
+      ],
+      "prevention": [
+        "Use resistant varieties",
+        "Avoid overhead irrigation",
+        "Disinfect tools between plants",
+        "Practice 3-year crop rotation",
+        "Remove plant debris after harvest",
+        "Avoid working in wet fields"
+      ],
+      "costEstimate": "₦4,000 - ₦12,000 per hectare",
+      "effectiveness": "70-85%",
+      "timeToRecovery": "2-3 weeks with treatment"
+    },
+    "Tomato___Early_blight": {
+      "name": "Early Blight",
+      "fullName": "Tomato Early Blight",
+      "severity": "medium",
+      "description": "A common fungal disease causing target-spot lesions on leaves, stems, and fruits.",
+      "symptoms": [
+        "Dark brown spots with concentric rings (target pattern)",
+        "Yellow halo around lesions",
+        "Lower leaves affected first",
+        "Leaf yellowing and drop",
+        "Stem lesions and girdling"
+      ],
+      "treatments": [
+        {
+          "method": "Apply Fungicides",
+          "priority": "high",
+          "details": "Use chlorothalonil, mancozeb, or azoxystrobin every 7-14 days",
+          "timing": "Preventive application before symptoms"
+        },
+        {
+          "method": "Remove Infected Leaves",
+          "priority": "medium",
+          "details": "Prune lower leaves and any infected foliage",
+          "timing": "Weekly inspection and removal"
+        },
+        {
+          "method": "Mulch Around Plants",
+          "priority": "medium",
+          "details": "Apply organic mulch to prevent soil splash",
+          "timing": "At planting or early growth"
+        },
+        {
+          "method": "Improve Drainage",
+          "priority": "medium",
+          "details": "Ensure proper soil drainage and avoid waterlogging",
+          "timing": "Field preparation"
+        }
+      ],
+      "prevention": [
+        "Plant resistant varieties",
+        "Maintain proper plant spacing (45-60cm)",
+        "Use drip irrigation instead of overhead",
+        "Rotate crops (avoid tomatoes/potatoes in same spot for 3 years)",
+        "Remove and destroy crop debris",
+        "Stake plants for better air circulation"
+      ],
+      "costEstimate": "₦3,500 - ₦10,000 per hectare",
+      "effectiveness": "80-90%",
+      "timeToRecovery": "2-4 weeks with proper management"
+    },
+    "Tomato___Late_blight": {
+      "name": "Late Blight",
+      "fullName": "Tomato Late Blight",
+      "severity": "very high",
+      "description": "The most destructive tomato disease, can destroy entire crop within days during favorable conditions.",
+      "symptoms": [
+        "Large irregular brown-black lesions on leaves",
+        "White fuzzy growth on leaf undersides (in humid conditions)",
+        "Brown lesions on stems",
+        "Firm brown lesions on green fruits",
+        "Rapid plant collapse and death"
+      ],
+      "treatments": [
+        {
+          "method": "Immediate Fungicide Application",
+          "priority": "critical",
+          "details": "Apply systemic fungicides (metalaxyl, cymoxanil) immediately at first sign",
+          "timing": "Immediately, repeat every 5-7 days"
+        },
+        {
+          "method": "Remove and Destroy Infected Plants",
+          "priority": "critical",
+          "details": "Remove entire severely infected plants to prevent spread",
+          "timing": "Within 24 hours of detection"
+        },
+        {
+          "method": "Improve Drainage",
+          "priority": "high",
+          "details": "Reduce soil moisture and humidity around plants",
+          "timing": "Immediately"
+        },
+        {
+          "method": "Harvest Mature Fruits",
+          "priority": "high",
+          "details": "Harvest any marketable fruits before disease spreads",
+          "timing": "Immediately if disease present"
+        }
+      ],
+      "prevention": [
+        "Plant resistant varieties (e.g., Mountain Merit, Plum Regal)",
+        "Avoid overhead irrigation",
+        "Ensure excellent air circulation",
+        "Monitor weather - disease thrives in cool, wet conditions",
+        "Apply preventive fungicides before symptoms appear",
+        "Destroy volunteer tomato and potato plants",
+        "Avoid planting near potatoes"
+      ],
+      "costEstimate": "₦8,000 - ₦25,000 per hectare",
+      "effectiveness": "60-80% (if caught early)",
+      "timeToRecovery": "3-5 days to plant death if untreated; 2-3 weeks with aggressive treatment"
+    },
+    "Tomato___Leaf_Mold": {
+      "name": "Leaf Mold",
+      "fullName": "Tomato Leaf Mold",
+      "severity": "medium",
+      "description": "A fungal disease primarily affecting greenhouse tomatoes, causing leaf yellowing and mold growth.",
+      "symptoms": [
+        "Yellow spots on upper leaf surface",
+        "Olive-green to brown fuzzy mold on leaf undersides",
+        "Leaf curling and wilting",
+        "Premature leaf drop",
+        "Reduced photosynthesis and yield"
+      ],
+      "treatments": [
+        {
+          "method": "Apply Fungicides",
+          "priority": "high",
+          "details": "Use chlorothalonil or copper-based fungicides",
+          "timing": "Weekly applications"
+        },
+        {
+          "method": "Remove Infected Leaves",
+          "priority": "high",
+          "details": "Prune and dispose of affected foliage",
+          "timing": "At first sign, continue weekly"
+        },
+        {
+          "method": "Reduce Humidity",
+          "priority": "critical",
+          "details": "Improve greenhouse ventilation, reduce humidity below 85%",
+          "timing": "Immediately and maintain"
+        },
+        {
+          "method": "Increase Air Circulation",
+          "priority": "high",
+          "details": "Use fans in greenhouse, increase plant spacing",
+          "timing": "Ongoing"
+        }
+      ],
+      "prevention": [
+        "Use resistant varieties (genes Cf-1 to Cf-11)",
+        "Maintain greenhouse humidity below 85%",
+        "Provide excellent ventilation",
+        "Avoid overhead watering",
+        "Space plants properly (45-60cm apart)",
+        "Remove lower leaves to improve airflow",
+        "Sanitize greenhouse between crops"
+      ],
+      "costEstimate": "₦2,500 - ₦8,000 per greenhouse",
+      "effectiveness": "85-95%",
+      "timeToRecovery": "2-3 weeks with proper management"
+    },
+    "Tomato___healthy": {
+      "name": "Healthy Tomato",
+      "fullName": "Healthy Tomato Plant",
+      "severity": "none",
+      "description": "Your tomato plant is healthy with no visible disease symptoms. Continue your current care practices.",
+      "symptoms": [
+        "Vibrant green leaves",
+        "Healthy growth and development",
+        "No spots, lesions, or discoloration",
+        "Good fruit set and development"
+      ],
+      "treatments": [],
+      "prevention": [
+        "Continue regular monitoring",
+        "Maintain consistent watering schedule",
+        "Fertilize appropriately (balanced N-P-K)",
+        "Prune suckers and lower leaves",
+        "Support plants with stakes or cages",
+        "Monitor for pests weekly",
+        "Rotate crops annually"
+      ],
+      "costEstimate": "₦0",
+      "effectiveness": "100%",
+      "recommendation": "Excellent! Your plant is healthy. Continue current practices and monitor regularly for any changes."
+    }
+  }
+}
