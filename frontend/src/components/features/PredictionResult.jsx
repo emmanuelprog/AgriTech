@@ -5,7 +5,7 @@ import ConfidenceMeter from '../ui/ConfidenceMeter';
 
 import { Link } from 'react-router-dom';
 
-const PredictionResult = ({ prediction, onViewTreatment, onSaveHistory, isSaved }) => {
+const PredictionResult = ({ prediction, onViewTreatment, onSaveHistory, isSaved, hideSaveButton }) => {
   if (!prediction) return null;
 
   const { crop, prediction: pred, treatment, allPredictions } = prediction;
@@ -91,22 +91,25 @@ const PredictionResult = ({ prediction, onViewTreatment, onSaveHistory, isSaved 
           )}
 
           {/* 2. Systematic Toggle Logic */}
-          {!isSaved ? (
-            <button
-              onClick={onSaveHistory}
-              className="btn btn-outline flex-1"
-            >
-              <Download size={18} className="mr-2" />
-              Save to History
-            </button>
-          ):(
-            
-              <Link to="/history" 
-                className="btn btn-success flex-1 flex items-center justify-center bg-green-600 hover:bg-green-700 text-white border-none shadow-md">
-                <History size={18} className="mr-2" />
-                View History
-              </Link>
-            
+          {!hideSaveButton && (
+            <>
+            {!isSaved ? (
+              <button
+                onClick={onSaveHistory}
+                className="btn btn-outline flex-1"
+              >
+                <Download size={18} className="mr-2" />
+                Save to History
+              </button>
+            ):(
+              
+                <Link to="/history" 
+                  className="btn btn-success flex-1 flex items-center justify-center bg-green-600 hover:bg-green-700 text-white border-none shadow-md">
+                  <History size={18} className="mr-2" />
+                  View History
+                </Link>              
+            )}
+            </>
           )}
         </div>
       </div>

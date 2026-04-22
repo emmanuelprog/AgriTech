@@ -97,8 +97,10 @@ class PredictionHistory(db.Model):
     def to_dict(self):
         """Convert to dictionary"""
         import json
+         # We need to fetch the treatment info here so it's available in History
+        from app.routes.treatments import load_treatment_data
         
-        return {
+        data = {
             'id': self.id,
             'userId': self.user_id,
             'crop': self.crop,
@@ -115,6 +117,25 @@ class PredictionHistory(db.Model):
             'fieldName': self.field_name,
             'fieldSize': self.field_size
         }
+
+        # Add the nested prediction object (Frontend needs this)
+        data['prediction'] = {
+            'disease': self.disease,
+            'confidence': self.confidence
+        }
+        
+        # Fetch the treatment info for this history record
+        try:
+            treatments = load_treatment_data()
+            # We use crop.lower() to ensure it matches your JSON keys
+            crop_data = treatments.get(self.crop.lower(), {})
+            data['treatment'] = crop_data.get(self.disease)
+        except Exception as e:
+            print(f"Error loading treatment: {e}")
+            data['treatment'] = None
+
+        # NOW return the complete data
+        return data
     
     def __repr__(self):
         return f'<Prediction {self.id}: {self.crop} - {self.disease}>'
