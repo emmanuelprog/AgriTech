@@ -42,13 +42,18 @@ export const usePredictionStore = create((set) => ({
   currentPrediction: null,
   isLoading: false,
   error: null,
+  isSaved: false,
 
   setPrediction: (prediction) =>
     set({
       currentPrediction: prediction,
       isLoading: false,
       error: null,
+      isSaved: false,
     }),
+
+  setIsSaved: (val) => 
+    set({ isSaved: val }),
 
   setLoading: (loading) =>
     set({ isLoading: loading }),

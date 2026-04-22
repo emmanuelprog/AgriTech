@@ -9,7 +9,7 @@ const PredictionResult = ({ prediction, onViewTreatment, onSaveHistory, isSaved 
   if (!prediction) return null;
 
   const { crop, prediction: pred, treatment, allPredictions } = prediction;
-  const isHealthy = pred.disease === 'Healthy' || pred.disease === 'Tomato___healthy';
+  const isHealthy = pred.disease === 'Healthy' || pred.disease === 'Tomato_healthy';
 
   return (
     <motion.div
@@ -100,10 +100,13 @@ const PredictionResult = ({ prediction, onViewTreatment, onSaveHistory, isSaved 
               Save to History
             </button>
           ):(
-            <Link to="/history" className="btn btn-success flex-1 flex items-center justify-center">
-              <History size={18} className="mr-2" />
-              View History
-            </Link>
+            
+              <Link to="/history" 
+                className="btn btn-success flex-1 flex items-center justify-center bg-green-600 hover:bg-green-700 text-white border-none shadow-md">
+                <History size={18} className="mr-2" />
+                View History
+              </Link>
+            
           )}
         </div>
       </div>

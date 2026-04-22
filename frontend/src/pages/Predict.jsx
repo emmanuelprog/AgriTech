@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, Camera as CameraIcon, Upload, Leaf } from 'lucide-react';
+import { CheckCircle, ArrowRight, Camera as CameraIcon, Upload, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { usePredictionStore, useAuthStore } from '../store';
 import { getCropEmoji } from '../utils/helpers';
 
 const Predict = () => {
-  const [isSaved, setIsSaved] = useState(false); // Add this at the top with other states
+  //const [isSaved, setIsSaved] = useState(false); // Add this at the top with other states
 
   const [selectedCrop, setSelectedCrop] = useState('cassava');
   const [captureMode, setCaptureMode] = useState(null); // 'camera' or 'upload'
@@ -22,7 +22,7 @@ const Predict = () => {
   const [showCamera, setShowCamera] = useState(false);
   const [showTreatment, setShowTreatment] = useState(false);
   
-  const { currentPrediction, isLoading, setPrediction, setLoading, setError } = usePredictionStore();
+  const { currentPrediction, isLoading, setPrediction, setLoading, setError, setIsSaved, isSaved } = usePredictionStore();
   const { isAuthenticated } = useAuthStore();
 
   const crops = [
@@ -59,8 +59,22 @@ const Predict = () => {
       formData.append('crop', selectedCrop);
 
       const response = await predictionAPI.predict(formData);
-      setPrediction(response.data);
+      const result = response.data;
+      setPrediction(result);
+
+      // --- CHECK IF ALREADY SAVED ---
+      // Fetch recent history to see if this exact result was just saved
+      const historyRes = await historyAPI.getHistory({ limit: 10 });
+      const alreadySaved = historyRes.data.predictions.some(p => 
+        p.disease === result.prediction.disease && 
+        p.crop === result.crop &&
+        // Optional: check if timestamp is very recent (within last 1 hour)
+        (new Date() - new Date(p.timestamp)) < 3600000 
+      );
+      
+      setIsSaved(alreadySaved);
       toast.success('Analysis complete!');
+
     } catch (error) {
       console.error('Prediction error:', error);
       setError(error.response?.data?.error || 'Failed to analyze image');
@@ -87,6 +101,7 @@ const Predict = () => {
 
       await historyAPI.saveHistory(historyData);
       setIsSaved(true); // <--- Mark as saved
+
       toast.success('Saved to history successfully!');
     } catch (error) {
       console.error('Save history error:', error);
@@ -220,7 +235,10 @@ const Predict = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between"
             >
-              <span className="text-blue-700 font-medium">Prediction added to your records!</span>
+              <div className="flex items-center text-green-700">
+                <CheckCircle size={20} className="mr-2" />
+                <span className="text-blue-700 font-medium">Prediction added to your records!</span>
+              </div>
               <Link 
                 to="/dashboard" 
                 className="btn btn-primary btn-sm flex items-center"

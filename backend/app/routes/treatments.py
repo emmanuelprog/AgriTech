@@ -64,8 +64,19 @@ def get_disease_treatment(crop, disease):
         data = load_treatment_data()
         crop_data = data.get(crop, {})
         disease_data = crop_data.get(disease, None)
+
+        # 2. If not found, try a "fuzzy" match (ignore case and underscores)
+        if not disease_data:
+            search_key = disease.lower().replace('_', '').replace(' ', '')
+            for key, value in crop_data.items():
+                normalized_key = key.lower().replace('_', '').replace(' ', '')
+                if normalized_key == search_key:
+                    disease_data = value
+                    break
         
         if disease_data is None:
+            # Helpful debug print so you know exactly which key failed
+            print(f"⚠️ MISSING DATA: No treatment found for '{disease}' in crop '{crop}'")
             return jsonify({
                 'error': f'Disease {disease} not found for {crop}'
             }), 404

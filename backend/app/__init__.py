@@ -19,7 +19,8 @@ jwt = JWTManager()
 bcrypt = Bcrypt()
 limiter = Limiter(
     key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"],
+    enabled=False,  # Disable rate limiting for now (set to True in production)
+    default_limits=["200 per day", "500 per hour"],
     storage_uri="memory://"
 )
 

@@ -22,55 +22,51 @@ def get_dashboard():
     Returns comprehensive analytics for the current user
     """
     try:
-        print(f'Get identity value {get_jwt_identity}')
+        print(f'Get identity value {get_jwt_identity()}') #Debugging line to check JWT identity value
         current_user_id = int(get_jwt_identity())    
+
+        # filter query by user_id and check results
+        user_query = PredictionHistory.query.filter_by(user_id=current_user_id)
+
         # Total predictions
-        total_predictions = PredictionHistory.query.filter_by(user_id=current_user_id).count()
+        total_predictions = user_query.count()
         print(f"DEBUG: Total Predictions in Flask is {total_predictions}") #Check your terminal! 
 
         # Check total rows regardless of user
-        total_all_users = PredictionHistory.query.count()
-        print(f"Total rows in table: {total_all_users}")
+        #total_all_users = PredictionHistory.query.count()
+        #print(f"Total rows in table: {total_all_users}")
 
         # Check first row's user_id
-        first_entry = PredictionHistory.query.first()
-        if first_entry:
-            print(f"Found user_id in DB: {first_entry.user_id}")
+        #first_entry = user_query.first()
+        #if first_entry:
+        #    print(f"Found user_id in DB: {first_entry.user_id}")
 
         
         # Predictions by crop
-        cassava_count = PredictionHistory.query.filter_by(
-            user_id=current_user_id, 
+        cassava_count = user_query.filter_by(            
             crop='cassava'
         ).count()
-        tomato_count = PredictionHistory.query.filter_by(
-            user_id=current_user_id, 
+        tomato_count = user_query.filter_by(            
             crop='tomato'
         ).count()
         
         # Recent predictions (last 7 days)
         week_ago = datetime.utcnow() - timedelta(days=7)
-        recent_count = PredictionHistory.query.filter(
-            and_(
-                PredictionHistory.user_id == current_user_id,
+        recent_count = user_query.filter(
+            and_(                
                 PredictionHistory.timestamp >= week_ago
             )
         ).count()
         
-        # Diseased vs Healthy
-        diseased_count = PredictionHistory.query.filter(
-            and_(
-                PredictionHistory.user_id == current_user_id,
-                PredictionHistory.disease.in_(['Healthy', 'Tomato___healthy'])
+        # Diseased vs Healthy        
+        healthy_count = user_query.filter(
+            and_(                
+                PredictionHistory.disease.in_(['Healthy', 'Tomato_healthy'])
             )
         ).count()
-        
-        healthy_count = PredictionHistory.query.filter(
-            and_(
-                PredictionHistory.user_id == current_user_id,
-                PredictionHistory.disease.in_(['Healthy', 'Tomato___healthy'])
-            )
-        ).count()
+
+        # Diseased count (Total minus Healthy)
+        diseased_count = total_predictions - healthy_count
         
         # Most common diseases
         common_diseases = db.session.query(
@@ -136,6 +132,7 @@ def get_trends():
         - crop: Filter by crop (optional)
     """
     try:
+        print("We are in get_trends function", flush=True) #Debugging line to confirm we're hitting this endpoint
         current_user_id = int(get_jwt_identity())
         days = int(request.args.get('days', 30))
         crop = request.args.get('crop')
@@ -195,8 +192,9 @@ def get_trends():
         
         # Format response
         trends_by_date = {}
-        for date, disease, count in disease_trends:
-            date_str = date.isoformat()
+        print(f"DEBUG: Disease trends raw data: {disease_trends}") #Debugging line to check raw disease trends data
+        for date, disease, count in disease_trends:            
+            date_str = date if isinstance(date, str) else date.isoformat()
             if date_str not in trends_by_date:
                 trends_by_date[date_str] = {}
             trends_by_date[date_str][disease] = count
@@ -211,7 +209,7 @@ def get_trends():
                 },
                 'dailyCounts': [
                     {
-                        'date': date.isoformat(),
+                        'date': date if isinstance(date, str) else date.isoformat(),
                         'count': count
                     }
                     for date, count in daily_counts
@@ -221,6 +219,11 @@ def get_trends():
         }), 200
     
     except Exception as e:
+        import traceback
+        print("=" * 50)
+        print("An error occurred in get_trends:")
+        traceback.print_exc()  # Print the full stack trace for debugging
+        print(f"DEBUG ERROR: {e}", flush=True)  # Ensure the error message is printed immediately
         return jsonify({
             'success': False,
             'error': str(e)
