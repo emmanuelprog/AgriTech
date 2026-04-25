@@ -53,12 +53,14 @@ if __name__ == '__main__':
     print("\n" + "="*60)
     print("🌾 AgriTech Backend API Starting...")
     print("="*60)
-    print(f"📍 Running on: http://localhost:{port}")
+    print(f"📍 Running on: https://localhost:{port}")
     print(f"🔧 Debug mode: {debug}")
     print("="*60 + "\n")
     
     app.run(
         host='0.0.0.0',
         port=port,
-        debug=True
+        debug=True,
+        #threaded=True, 
+        #ssl_context='adhoc'
     )

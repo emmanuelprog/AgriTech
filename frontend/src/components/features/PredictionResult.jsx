@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { AlertCircle, CheckCircle, TrendingUp, Droplet, Calendar, Download, History } from 'lucide-react';
+import { Leaf, AlertCircle, CheckCircle, TrendingUp, Droplet, Calendar, Download, History } from 'lucide-react';
 import { formatDiseaseName, getConfidenceLevel, getCropEmoji } from '../../utils/helpers';
 import ConfidenceMeter from '../ui/ConfidenceMeter';
 
@@ -9,7 +9,11 @@ const PredictionResult = ({ prediction, onViewTreatment, onSaveHistory, isSaved,
   if (!prediction) return null;
 
   const { crop, prediction: pred, treatment, allPredictions } = prediction;
-  const isHealthy = pred.disease === 'Healthy' || pred.disease === 'Tomato_healthy';
+  
+  // Checks if the disease string contains 'healthy' (covers both crops)
+  //const isHealthy = pred.disease === 'Healthy' || pred.disease === 'Tomato_healthy';
+  const isHealthy = pred.disease.toLowerCase().includes('healthy');
+
 
   return (
     <motion.div
@@ -57,7 +61,7 @@ const PredictionResult = ({ prediction, onViewTreatment, onSaveHistory, isSaved,
         {/* Disease Name */}
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            {formatDiseaseName(pred.disease)}
+            {formatDiseaseName(pred.disease, crop)}
           </h2>
           {treatment?.description && (
             <p className="text-gray-600">
@@ -81,12 +85,23 @@ const PredictionResult = ({ prediction, onViewTreatment, onSaveHistory, isSaved,
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
-          {!isHealthy && treatment && (
+          {treatment && (
             <button
               onClick={onViewTreatment}
-              className="btn btn-primary flex-1"
+              className={`btn flex-1 flex items-center justify-center ${
+                isHealthy ? 'bg-green-600 hover:bg-green-700 text-white' : 'btn-primary'
+              }`}
             >
-              View Treatment Guide
+              {isHealthy ? (
+                <>
+                  <Leaf size={18} className="mr-2" />
+                  View Care Tips
+                </>
+              ) : (
+                <>
+                  View Treatment Guide
+                </>
+              )}
             </button>
           )}
 

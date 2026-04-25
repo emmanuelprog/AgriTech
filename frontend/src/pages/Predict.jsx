@@ -275,6 +275,8 @@ const Predict = () => {
           treatment={currentPrediction.treatment}
           crop={currentPrediction.crop}
           disease={currentPrediction.prediction.disease}
+          // This is the important part!
+          isHealthy={currentPrediction.prediction.disease.toLowerCase().includes('healthy')}
           onClose={() => setShowTreatment(false)}
         />
       )}

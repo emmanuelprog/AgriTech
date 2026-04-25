@@ -217,7 +217,7 @@
     }
   },
   "tomato": {
-    "Tomato___Bacterial_spot": {
+    "Tomato_Bacterial_spot": {
       "name": "Bacterial Spot",
       "fullName": "Tomato Bacterial Spot",
       "severity": "high",
@@ -267,7 +267,7 @@
       "effectiveness": "70-85%",
       "timeToRecovery": "2-3 weeks with treatment"
     },
-    "Tomato___Early_blight": {
+    "Tomato_Early_blight": {
       "name": "Early Blight",
       "fullName": "Tomato Early Blight",
       "severity": "medium",
@@ -317,7 +317,7 @@
       "effectiveness": "80-90%",
       "timeToRecovery": "2-4 weeks with proper management"
     },
-    "Tomato___Late_blight": {
+    "Tomato_Late_blight": {
       "name": "Late Blight",
       "fullName": "Tomato Late Blight",
       "severity": "very high",
@@ -368,7 +368,7 @@
       "effectiveness": "60-80% (if caught early)",
       "timeToRecovery": "3-5 days to plant death if untreated; 2-3 weeks with aggressive treatment"
     },
-    "Tomato___Leaf_Mold": {
+    "Tomato_Leaf_Mold": {
       "name": "Leaf Mold",
       "fullName": "Tomato Leaf Mold",
       "severity": "medium",
@@ -419,7 +419,7 @@
       "effectiveness": "85-95%",
       "timeToRecovery": "2-3 weeks with proper management"
     },
-    "Tomato___healthy": {
+    "Tomato_healthy": {
       "name": "Healthy Tomato",
       "fullName": "Healthy Tomato Plant",
       "severity": "none",

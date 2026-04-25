@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Leaf, Mail, Lock, AlertCircle } from 'lucide-react';
+import { EyeOff, Eye, Leaf, Mail, Lock, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { authAPI } from '../services/api';
 import { useAuthStore } from '../store';
@@ -11,6 +11,8 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,17 +79,29 @@ const Login = () => {
                 Password
               </label>
               <div className="relative">
+                {/* Left Icon (Lock) */}
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"} // Switches type
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="input pl-10"
+                  className="input pl-10 pr-10" // Added padding-right (pr-10) for the eye
                   placeholder="••••••••"
                   required
                 />
+
+                {/* Right Icon (Eye Toggle) */}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
               </div>
             </div>
+
 
             <button
               type="submit"

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Trash2, Filter, X } from 'lucide-react';
 import { historyAPI } from '../services/api';
-import { formatTimeAgo, getCropEmoji } from '../utils/helpers';
+import { formatDiseaseName, formatTimeAgo, getCropEmoji } from '../utils/helpers';
 import toast from 'react-hot-toast';
 
 import PredictionResult from '../components/features/PredictionResult';
@@ -78,7 +78,7 @@ const History = () => {
                 <div className="flex items-start space-x-4 flex-1">
                   <div className="text-3xl">{getCropEmoji(item.crop)}</div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">{item.disease}</h3>
+                    <h3 className="font-semibold text-gray-900">{formatDiseaseName(item.disease, item.crop)}</h3>
                     <p className="text-sm text-gray-600 capitalize">{item.crop}</p>
                     <p className="text-xs text-gray-500 mt-1">{formatTimeAgo(item.timestamp)}</p>
                   </div>
@@ -140,6 +140,8 @@ const History = () => {
           crop={selectedPrediction.crop}
           disease={selectedPrediction.disease}
           onClose={() => setShowTreatment(false)}
+          /* THE FIX: Calculate it right here */
+          isHealthy={selectedPrediction.disease.toLowerCase().includes('healthy')}
         />
       )}
 

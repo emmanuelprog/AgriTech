@@ -8,6 +8,7 @@ const Camera = ({ onCapture, onClose }) => {
   const [facingMode, setFacingMode] = useState('environment');
   const [isCaptured, setIsCaptured] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
+  
 
   const videoConstraints = {
     width: 1280,
@@ -75,13 +76,30 @@ const Camera = ({ onCapture, onClose }) => {
             />
             
             {/* Camera Overlay */}
-            <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
               {/* Guideline frame */}
-              <div className="absolute inset-4 border-2 border-white/30 rounded-2xl" />
+              <div 
+                style={{ 
+                  bottom: '150px',
+                  WebkitTransform: 'translateZ(50px)', // Keep it above the video
+                  transform: 'translateZ(50px)'
+                }}
+                className="w-full max-w-[300px] aspect-square border-2 border-white/40 rounded-3xl border-dashed relative flex items-center justify-center" />
               
               {/* Center crosshair */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-20 h-20 border-2 border-primary-400 rounded-full" />
+              <div 
+              style={{ 
+                    bottom: '-30px',                     
+                  }}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <div 
+                  style={{ 
+                    top: '150px',
+                    WebkitTransform: 'translateZ(60px)', 
+                    transform: 'translateZ(60px)' 
+                  }}
+                  className="w-16 h-16 border-2 border-primary-400 rounded-full bg-primary-400/10 flex items-center justify-center" />
+                  
               </div>
             </div>
           </>
@@ -101,6 +119,14 @@ const Camera = ({ onCapture, onClose }) => {
             {/* Switch Camera */}
             <button
               onClick={switchCamera}
+              style={{ 
+                zIndex: 9999, 
+                position: 'absolute', // Ensure it's absolute
+                bottom: '60px',       // Adjust as needed
+                left: '75%',
+                transform: 'translateX(-50%) translateZ(100px)', // The magic 3D fix
+                WebkitTransform: 'translateX(-50%) translateZ(100px)' 
+              }}
               className="p-4 bg-white/10 text-white rounded-full hover:bg-white/20 transition-all"
             >
               <RotateCcw size={24} />
@@ -109,6 +135,14 @@ const Camera = ({ onCapture, onClose }) => {
             {/* Capture Button */}
             <button
               onClick={capture}
+              style={{ 
+                zIndex: 9999, 
+                position: 'absolute', // Ensure it's absolute
+                bottom: '50px',       // Adjust as needed
+                left: '50%',
+                transform: 'translateX(-50%) translateZ(100px)', // The magic 3D fix
+                WebkitTransform: 'translateX(-50%) translateZ(100px)' 
+              }}
               className="w-20 h-20 bg-white rounded-full border-4 border-primary-500 hover:scale-110 transition-transform shadow-lg"
             >
               <div className="w-full h-full rounded-full bg-primary-500" />
@@ -121,12 +155,28 @@ const Camera = ({ onCapture, onClose }) => {
           <div className="flex items-center justify-center space-x-4">
             <button
               onClick={retake}
+              style={{ 
+                zIndex: 9999, 
+                position: 'absolute', // Ensure it's absolute
+                bottom: '80px',       // Adjust as needed
+                left: '80%',
+                transform: 'translateX(-50%) translateZ(100px)', // The magic 3D fix
+                WebkitTransform: 'translateX(-50%) translateZ(100px)' 
+              }}
               className="px-6 py-3 bg-white/10 text-white rounded-lg hover:bg-white/20 transition-all font-medium"
             >
               Retake
             </button>
             <button
               onClick={handleUsePhoto}
+              style={{ 
+                zIndex: 9999, 
+                position: 'absolute', // Ensure it's absolute
+                bottom: '80px',       // Adjust as needed
+                left: '20%',
+                transform: 'translateX(-50%) translateZ(100px)', // The magic 3D fix
+                WebkitTransform: 'translateX(-50%) translateZ(100px)' 
+              }}
               className="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all font-medium shadow-lg"
             >
               Use Photo

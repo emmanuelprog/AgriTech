@@ -52,9 +52,17 @@ export const getSeverityColor = (severity) => {
 };
 
 // Format disease name for display
-export const formatDiseaseName = (disease) => {
+export const formatDiseaseName = (disease, crop = '') => {
   if (!disease) return '';
-  
+
+  const diseaseLower = disease.toLowerCase();
+  const cropLower = crop.toLowerCase();
+
+  // Systematic check for Cassava Healthy
+  if (cropLower === 'cassava' && diseaseLower === 'healthy') {
+    return 'Cassava Healthy';
+  }
+
   // Remove crop prefix if present (e.g., "Tomato___" -> "")
   const cleaned = disease.replace(/^(Tomato|Cassava)___/i, '');
   

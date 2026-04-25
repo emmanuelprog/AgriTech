@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Camera, History, TrendingUp, Leaf, ArrowRight } from 'lucide-react';
 import { analyticsAPI, historyAPI } from '../services/api';
 import { useAuthStore } from '../store';
-import { getCropEmoji } from '../utils/helpers';
+import { getCropEmoji, formatDiseaseName } from '../utils/helpers';
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -129,7 +129,7 @@ const Dashboard = () => {
                   <div className="flex items-center space-x-3">
                     <div className="text-2xl">{getCropEmoji(pred.crop)}</div>
                     <div>
-                      <p className="font-medium text-gray-900 text-sm">{pred.disease}</p>
+                      <p className="font-medium text-gray-900 text-sm">{formatDiseaseName(pred.disease, pred.crop)}</p>
                       <p className="text-xs text-gray-600">{pred.crop}</p>
                     </div>
                   </div>

@@ -1,9 +1,13 @@
 import { X, AlertTriangle, CheckCircle, Shield, DollarSign, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const TreatmentGuide = ({ treatment, crop, disease, onClose }) => {
-  if (!treatment) return null;
+const TreatmentGuide = ({ treatment, crop, disease, onClose, isHealthy }) => {
 
+  console.log("Is it healthy?", isHealthy);
+  console.log("Treatment data:", treatment);
+
+  if (!treatment) return null;
+  
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
       <motion.div
@@ -12,13 +16,15 @@ const TreatmentGuide = ({ treatment, crop, disease, onClose }) => {
         className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar"
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-start justify-between">
+        <div className={`sticky top-0 border-b p-6 flex items-start justify-between bg-white ${
+          isHealthy ? 'border-green-100' : 'border-gray-200'
+        }`}>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
-              {treatment.fullName || treatment.name}
+            <h2 className={`text-2xl font-bold ${isHealthy ? 'text-green-800' : 'text-gray-900'}`}>
+              {isHealthy ? `Healthy ${crop} Care Guide` : (treatment.fullName || treatment.name)}
             </h2>
             <p className="text-gray-600 mt-1">
-              Complete treatment guide for {crop}
+              {isHealthy ? 'Best practices for plant maintenance' : `Complete treatment guide for ${crop}`}
             </p>
           </div>
           <button
@@ -32,67 +38,81 @@ const TreatmentGuide = ({ treatment, crop, disease, onClose }) => {
         <div className="p-6 space-y-6">
           {/* Description */}
           {treatment.description && (
-            <div className="card bg-gradient-to-r from-orange-50 to-red-50 border-orange-200">
+            <div className={`card bg-gradient-to-r border-2 ${
+                isHealthy 
+                  ? 'from-green-50 to-emerald-50 border-green-200' 
+                  : 'from-orange-50 to-red-50 border-orange-200'
+              }`}>
               <div className="flex items-start space-x-3">
-                <AlertTriangle className="text-orange-600 mt-1" size={24} />
+                {isHealthy ? (
+                  <CheckCircle className="text-green-600 mt-1" size={24} />
+                ) : (
+                  <AlertTriangle className="text-orange-600 mt-1" size={24} />
+                )}
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">About This Disease</h3>
-                  <p className="text-gray-700">{treatment.description}</p>
+                  <h3 className={`font-semibold mb-2 ${isHealthy ? 'text-green-900' : 'text-gray-900'}`}>
+                      {isHealthy ? 'Status Overview' : 'About This Disease'}
+                  </h3>
+                  <p className={isHealthy ? 'text-green-800' : 'text-gray-700'}>
+                    {treatment.description}
+                  </p>
                 </div>
               </div>
             </div>
           )}
 
           {/* Quick Info */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {treatment.costEstimate && (
-              <div className="card bg-blue-50 border-blue-200">
-                <div className="flex items-center space-x-2 mb-2">
-                  <DollarSign className="text-blue-600" size={20} />
-                  <span className="text-sm font-medium text-blue-900">Cost Estimate</span>
+          {!isHealthy && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {treatment.costEstimate && (
+                <div className="card bg-blue-50 border-blue-200">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <DollarSign className="text-blue-600" size={20} />
+                    <span className="text-sm font-medium text-blue-900">Cost Estimate</span>
+                  </div>
+                  <p className="text-lg font-bold text-blue-600">
+                    {treatment.costEstimate}
+                  </p>
                 </div>
-                <p className="text-lg font-bold text-blue-600">
-                  {treatment.costEstimate}
-                </p>
-              </div>
-            )}
+              )}
 
-            {treatment.effectiveness && (
-              <div className="card bg-green-50 border-green-200">
-                <div className="flex items-center space-x-2 mb-2">
-                  <CheckCircle className="text-green-600" size={20} />
-                  <span className="text-sm font-medium text-green-900">Effectiveness</span>
+              {treatment.effectiveness && (
+                <div className="card bg-green-50 border-green-200">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <CheckCircle className="text-green-600" size={20} />
+                    <span className="text-sm font-medium text-green-900">Effectiveness</span>
+                  </div>
+                  <p className="text-lg font-bold text-green-600">
+                    {treatment.effectiveness}
+                  </p>
                 </div>
-                <p className="text-lg font-bold text-green-600">
-                  {treatment.effectiveness}
-                </p>
-              </div>
-            )}
+              )}
 
-            {treatment.timeToRecovery && (
-              <div className="card bg-purple-50 border-purple-200">
-                <div className="flex items-center space-x-2 mb-2">
-                  <Clock className="text-purple-600" size={20} />
-                  <span className="text-sm font-medium text-purple-900">Recovery Time</span>
+              {treatment.timeToRecovery && (
+                <div className="card bg-purple-50 border-purple-200">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Clock className="text-purple-600" size={20} />
+                    <span className="text-sm font-medium text-purple-900">Recovery Time</span>
+                  </div>
+                  <p className="text-sm font-bold text-purple-600">
+                    {treatment.timeToRecovery}
+                  </p>
                 </div>
-                <p className="text-sm font-bold text-purple-600">
-                  {treatment.timeToRecovery}
-                </p>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
 
           {/* Symptoms */}
           {treatment.symptoms && treatment.symptoms.length > 0 && (
-            <div className="card">
+            <div className={`card ${isHealthy ? 'bg-green-50 border-green-100' : 'bg-white'}`}>
               <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
-                <AlertTriangle className="text-orange-500" size={20} />
-                <span>Symptoms to Look For</span>
+                {isHealthy ? <CheckCircle className="text-green-600" size={20} /> : <AlertTriangle className="text-orange-500" size={20} />}
+                <span>{isHealthy ? 'Why your plant is healthy' : 'Symptoms to Look For'}</span>
               </h3>
               <ul className="space-y-2">
                 {treatment.symptoms.map((symptom, index) => (
                   <li key={index} className="flex items-start space-x-3">
-                    <span className="text-orange-500 mt-1">•</span>
+                    <span className={isHealthy ? 'text-green-500 mt-1' : 'text-orange-500 mt-1'}>•</span>
                     <span className="text-gray-700">{symptom}</span>
                   </li>
                 ))}
@@ -144,7 +164,7 @@ const TreatmentGuide = ({ treatment, crop, disease, onClose }) => {
             <div className="card bg-green-50 border-green-200">
               <h3 className="font-semibold text-gray-900 mb-4 flex items-center space-x-2">
                 <Shield className="text-green-600" size={20} />
-                <span>Prevention Measures</span>
+                <span>{isHealthy ? 'How to keep it this way' : 'Prevention Measures'}</span>
               </h3>
               <ul className="space-y-2">
                 {treatment.prevention.map((measure, index) => (
