@@ -31,9 +31,14 @@ import traceback
 
 @app.errorhandler(Exception)
 def handle_exception(e):
+
+    # Don't log 404s as "Crashes"
+    if isinstance(e, werkzeug.exceptions.NotFound):
+        return jsonify({"error": str(e), "success": False}), 404
+
     # This prints the RED text (Traceback) to your terminal
     print("\n" + "!"*60)
-    print("🔥 BACKEND CRASH DETECTED")
+    print("🔥 BACKEND ACTUAL CRASH DETECTED")
     traceback.print_exc() 
     print("!"*60 + "\n")
     
@@ -43,6 +48,15 @@ def handle_exception(e):
         "error": str(e),
         "type": type(e).__name__
     }), 500
+
+
+@app.route('/')
+def home():
+    return jsonify({
+        "status": "online",
+        "message": "AgriTech API is running"
+    }), 200
+
 
 
 if __name__ == '__main__':
