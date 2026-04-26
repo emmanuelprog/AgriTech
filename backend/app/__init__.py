@@ -63,7 +63,7 @@ def create_app():
     #CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
     CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000",
                                                 "http://localhost:5000",
-                                                "https://vercel.app"]}}, supports_credentials=True)
+                                                "https://agri-tech-pink.vercel.app"]}}, supports_credentials=True)
     db.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
