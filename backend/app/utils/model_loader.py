@@ -9,10 +9,15 @@ from PIL import Image
 import os
 import json
 
+# Get the absolute path to the 'backend' folder
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Point to 'app/models' inside that folder
+MODELS_DIR = os.path.join(BASE_DIR, 'app', 'models')
+
 class ModelLoader:
     """Load and manage TensorFlow models for predictions"""
     
-    def __init__(self, models_dir='app/models'):
+    def __init__(self, models_dir=MODELS_DIR):
         self.models_dir = models_dir
         self.models = {}
         self.class_indices = {}

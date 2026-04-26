@@ -9,8 +9,11 @@ export default defineConfig({
     //basicSsl() // This enables the HTTPS protocol
   ],
   server: {
-    //host: '0.0.0.0', // Allows your iPhone to connect
-    allowedHosts: ['.ngrok-free.app'], // This allows ngrok to connect
+    host: '0.0.0.0', // Allows your iPhone to connect
+    allowedHosts: [
+      '.ngrok-free.app', // This allows ngrok to connect
+      '.vercel.app' // Optional: adds extra compatibility for Vercel previews
+    ], 
     port: 3000,
     open: true
   },

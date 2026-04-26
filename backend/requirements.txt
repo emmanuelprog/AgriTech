@@ -1,33 +1,23 @@
-# AgriTech Backend - Python Dependencies
-
-# Web Framework
+# Web & Auth
 Flask==3.0.0
 Flask-CORS==4.0.0
 Werkzeug==3.0.1
-
-# Authentication
 Flask-JWT-Extended==4.5.3
 Flask-Bcrypt==1.0.1
 
-# Machine Learning
-tensorflow==2.15.0
+# Database (Added psycopg2 for PostgreSQL)
+Flask-SQLAlchemy==3.1.1
+psycopg2-binary
+
+# Optimized ML (tensorflow-cpu is much smaller)
+tensorflow-cpu==2.15.0
 numpy==1.24.3
 Pillow==10.1.0
 
-# Database
-Flask-SQLAlchemy==3.1.1
-
-# Rate Limiting
+# Deployment & Utilities
+gunicorn==21.2.0
+python-dotenv==1.0.0
 Flask-Limiter==3.5.0
 
-# Utilities
-python-dotenv==1.0.0
-gunicorn==21.2.0
-
-# Analytics
+# Analytics (Keep these if you use them for the dashboard)
 pandas==2.1.3
-plotly==5.18.0
-
-# Development
-pytest==7.4.3
-black==23.12.0

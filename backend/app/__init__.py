@@ -27,10 +27,22 @@ limiter = Limiter(
 def create_app():
     """Create and configure Flask application"""
     app = Flask(__name__)
+
+
+    # Updates for PostgresSQL connection
+    # Get the Database URL from Render (defaults to SQLite for local dev)
+    #db_url = os.getenv('DATABASE_URL', 'sqlite:///agritech.db')
+    db_url = os.getenv('DATABASE_URL', 'postgresql://agritech_db_evg3_user:V4C9t8iPjcdrHc812843hPoc0dXixnch@dpg-d7mla2ok1i2s73976740-a/agritech_db_evg3')
+
+    # 2. FIX: Render uses 'postgres://', SQLAlchemy needs 'postgresql://'
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
     
     # Configuration
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///agritech.db')
+    #app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///agritech.db')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
     app.config['UPLOAD_FOLDER'] = 'uploads'
