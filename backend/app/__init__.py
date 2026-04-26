@@ -31,8 +31,7 @@ def create_app():
 
     # Updates for PostgresSQL connection
     # Get the Database URL from Render (defaults to SQLite for local dev)
-    #db_url = os.getenv('DATABASE_URL', 'sqlite:///agritech.db')
-    db_url = os.getenv('DATABASE_URL', 'postgresql://agritech_db_evg3_user:V4C9t8iPjcdrHc812843hPoc0dXixnch@dpg-d7mla2ok1i2s73976740-a/agritech_db_evg3')
+    db_url = os.getenv('DATABASE_URL', 'sqlite:///agritech.db')
 
     # 2. FIX: Render uses 'postgres://', SQLAlchemy needs 'postgresql://'
     if db_url.startswith("postgres://"):
