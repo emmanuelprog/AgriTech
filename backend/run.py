@@ -7,6 +7,8 @@ from app import create_app
 import os
 from flask import jsonify
 
+import werkzeug.exceptions
+
 app = create_app()
 
 # Get the jwt instance from the app's extensions
