@@ -36,6 +36,9 @@ class User(db.Model):
     
     # Relationships
     predictions = db.relationship('PredictionHistory', backref='user', lazy=True)
+
+    # To support password reset functionality
+    reset_token = db.Column(db.String(100), unique=True, nullable=True)
     
     def set_password(self, password):
         """Hash and set password"""

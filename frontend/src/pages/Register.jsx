@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Leaf, Mail, Lock, User, MapPin } from 'lucide-react';
+import { EyeOff, Eye, Leaf, Mail, Lock, User, MapPin } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { authAPI } from '../services/api';
 import { useAuthStore } from '../store';
@@ -10,6 +10,7 @@ const Register = () => {
     email: '',
     username: '',
     password: '',
+    confirmPassword: '',
     fullName: '',
     location: '',
   });
@@ -17,9 +18,16 @@ const Register = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
 
     try {
       const response = await authAPI.register(formData);
@@ -29,8 +37,8 @@ const Register = () => {
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
       
-      toast.success('Account created successfully!');
-      navigate('/dashboard');
+      toast.success('Account created successfully! Please login to continue.');
+      navigate('/login');
     } catch (err) {
       toast.error(err.response?.data?.error || 'Registration failed');
     } finally {
@@ -108,15 +116,49 @@ const Register = () => {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="input pl-10"
                   required
                   minLength={8}
                 />
+
+                {/* Right Icon (Eye Toggle) */}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>            
               </div>
             </div>
+
+            {/* Confirm Password Field */}
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <input
+                  type={showPassword ? "text" : "password"} // Linked to the same toggle for convenience
+                  value={formData.confirmPassword}
+                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  className={`input pl-10 ${
+                    formData.confirmPassword && formData.password !== formData.confirmPassword 
+                    ? 'border-red-500 focus:ring-red-500' 
+                    : ''
+                  }`}
+                  placeholder="Confirm your password"
+                  required
+                />
+              </div>
+              {/* Visual Validation Hint */}
+              {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">Passwords do not match</p>
+              )}
+            </div>
+
 
             <button type="submit" disabled={isLoading} className="btn btn-primary w-full">
               {isLoading ? 'Creating Account...' : 'Create Account'}

@@ -3,6 +3,9 @@ Authentication Routes
 User registration, login, and token management
 """
 
+import secrets # To generate a random token
+import os
+
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import (
     create_access_token, 
@@ -73,8 +76,8 @@ def register():
             'success': True,
             'message': 'User registered successfully',
             'user': user.to_dict(),
-            'accessToken': access_token,
-            'refreshToken': refresh_token
+            # 'accessToken': access_token,
+            # 'refreshToken': refresh_token
         }), 201
     
     except Exception as e:
@@ -265,3 +268,56 @@ def update_profile():
             'success': False,
             'error': str(e)
         }), 500
+
+
+@auth_bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get('email')
+    user = User.query.filter_by(email=email).first()
+    
+    if user:
+        # 1. Generate and save token
+        token = secrets.token_urlsafe(32)
+        user.reset_token = token
+        db.session.commit()
+        
+        # 2. DETECT ENVIRONMENT
+        # Locally, this will be http://localhost:3000
+        # On Render, you will set this to https://vercel.app
+        frontend_url = os.getenv('https://agri-tech-pink.vercel.app', 'http://localhost:3000')
+        
+        reset_link = f"{frontend_url}/reset-password?token={token}"
+        
+        # 3. PRINT TO TERMINAL (For local/Render testing)
+        print("\n" + "="*60)
+        print(f"🔑 PASSWORD RESET REQUEST")
+        print(f"User: {email}")
+        print(f"Link: {reset_link}")
+        print("="*60 + "\n")
+
+    # Always return 200 for security
+    return jsonify({
+        'success': True, 
+        'message': 'If the email exists, a reset link has been generated.'
+    }), 200
+
+
+@auth_bp.route('/reset-password', methods=['POST'])
+def reset_password():
+    data = request.get_json()
+    token = data.get('token')
+    new_password = data.get('new_password')
+    
+    # Find user with this token
+    user = User.query.filter_by(reset_token=token).first()
+    
+    if not user:
+        return jsonify({'error': 'Invalid or expired token'}), 400
+        
+    # Update password and clear token
+    user.set_password(new_password)
+    user.reset_token = None
+    db.session.commit()
+    
+    return jsonify({'success': True, 'message': 'Password reset successfully!'}), 200

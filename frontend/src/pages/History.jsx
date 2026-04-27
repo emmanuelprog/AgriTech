@@ -38,6 +38,7 @@ const History = () => {
       toast.error('Failed to delete');
     }
   };
+  
 
   return (
     <div>
@@ -98,7 +99,10 @@ const History = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 text-gray-500">No predictions yet</div>
+        <div className="text-center py-12 text-gray-500">
+          <p> No predictions yet </p>
+          <p className="text-gray-400 text-sm">Make some predictions to see History</p>
+        </div>
       )}
 
       {/* 3. MODAL FOR PREDICTION DETAILS */}

@@ -59,7 +59,7 @@ export const formatDiseaseName = (disease, crop = '') => {
   const cropLower = crop.toLowerCase();
 
   // Systematic check for Cassava Healthy
-  if (cropLower === 'cassava' && diseaseLower === 'healthy') {
+  if (diseaseLower === 'healthy' && (cropLower === 'cassava'|| !crop)) {
     return 'Cassava Healthy';
   }
 
@@ -74,6 +74,17 @@ export const formatDiseaseName = (disease, crop = '') => {
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
+};
+
+export const getDiseaseColor = (key) => {
+  const name = key.toLowerCase();
+  if (name.includes('healthy')) return '#10b981'; // Always Green for Healthy
+  if (name.includes('blight')) return '#ef4444';  // Red for Blight
+  if (name.includes('spot')) return '#f59e0b';    // Orange for Spots
+  
+  // Default palette for others
+  const defaults = ['#8b5cf6', '#3b82f6', '#ec4899', '#06b6d4'];
+  return defaults[Math.abs(key.length) % defaults.length];
 };
 
 // Validate email

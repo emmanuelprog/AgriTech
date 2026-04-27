@@ -1,20 +1,30 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, CartesianGrid, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { CheckCircle } from 'lucide-react';
 import { analyticsAPI } from '../services/api';
+import { formatDiseaseName, getDiseaseColor } from '../utils/helpers';
 
 // Professional Color Palette
-const COLORS = ['#2D6A4F', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#ec4899'];
+//const COLORS = ['#2D6A4F', '#f59e0b', '#ef4444', '#3b82f6', '#8b5cf6', '#ec4899'];
+const COLORS = [
+  '#2D6A4F', // Emerald 500 (Healthy)
+  '#f59e0b', // Amber 500 (Early Warning)
+  '#ef4444', // Red 500 (Critical/Blight)
+  '#8b5cf6', // Violet 500
+  '#3b82f6', // Blue 500
+  '#ec4899', // Pink 500
+];
+
 const getColorForDisease = (index) => COLORS[index % COLORS.length];
 
 
 const Analytics = () => {
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadAnalytics();
   }, []);
-
-  const [error, setError] = useState(null); // Add an error state
 
   const loadAnalytics = async () => {
     try {
@@ -68,76 +78,136 @@ const Analytics = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">
           <h3 className="font-semibold text-gray-900 mb-4">Disease Status</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
-                {pieData.map((entry, index) => (
-                  <Cell key={index} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          {pieData && pieData.length > 0 && pieData.some(d => d.value > 0) ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
+                  {pieData.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend 
+                  iconType="circle"
+                  iconSize={10}
+                  wrapperStyle={{ paddingBottom: '20px', fontSize: '14px' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+            ) : (
+            /* No Data Placeholder */
+            <div className="text-center">              
+              <p className="text-gray-500 font-medium">No disease data yet</p>
+              <p className="text-gray-400 text-sm">Make some predictions to see status</p>
+            </div>
+          )}
         </div>
+
         <div className="card">
-          <h3 className="font-semibold text-gray-900 mb-4">Top Diseases</h3>
+          <h3 className="font-semibold text-gray-900 mb-4">Top Prediction</h3>
           <div className="space-y-3">
             {data.dashboard.topDiseases?.length > 0 ? (data.dashboard.topDiseases?.slice(0, 5).map((disease, i) => (
               <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">{disease.disease}</span>
+                <span className="text-sm font-medium text-gray-700">{formatDiseaseName(disease.disease, disease.crop)}</span>
                 <span className="text-sm font-bold text-primary-600">{disease.count}</span>
               </div>
             ))) : (
-            <p className="text-gray-500 text-sm">No disease data recorded yet.</p>
+              <div className="text-center">
+                <p className="flex items-center justify-center h-full text-gray-500  ">No disease data recorded yet.</p>
+                <p className="text-gray-400 text-sm">Make some predictions to see status</p>
+              </div>
             )}
           </div>
         </div>
       </div>
             
-        {/* BOTTOM ROW: Trends Side-by-Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-          {/* Chart 1: Line Chart (Activity) */}
-          <div className="card">
-            <h3 className="font-semibold text-gray-700 mb-4">Activity Trend (Predictions)</h3>
-            <div className="h-[300px]">
-              {data?.lineTrends && data.lineTrends.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%" minHeight={300}>
-                <LineChart data={data.lineTrends}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="date" tick={{fontSize: 12}} tickFormatter={(val) => val.split('-').slice(1).join('/')}/>
-                  <YAxis tick={{fontSize: 12}} />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="count" stroke="#2D6A4F" strokeWidth={3} dot={{r: 4}} />
-                </LineChart>
-              </ResponsiveContainer>
-              ) : (
-                <div className="flex items-center justify-center h-full text-grey-500">
+      {/* BOTTOM ROW: Trends Side-by-Side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        {/* Chart 1: Line Chart (Activity) */}
+        <div className="card">
+          <h3 className="font-semibold text-gray-700 mb-4">Activity Trend (Predictions)</h3>
+          
+            {data?.lineTrends && data.lineTrends.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={data.lineTrends}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="date" tick={{fontSize: 12}} tickFormatter={(val) => val.split('-').slice(1).join('/')}/>
+                <YAxis tick={{fontSize: 12}} />
+                <Tooltip />
+                <Line type="monotone" dataKey="count" stroke="#2D6A4F" strokeWidth={3} dot={{r: 4}} />
+              </LineChart>
+            </ResponsiveContainer>
+            ) : (
+              <div className="text-center">
+                <p className="flex items-center justify-center h-full text-gray-500">
                   No data Available
-                </div>
-              )}
-            </div>
-          </div>
+                </p>
+                <p className="text-gray-400 text-sm">Make some predictions to see trends</p>
+              </div>              
+            )}
+          
+        </div>
 
-          {/* Chart 2: Stacked Bar Chart (Breakdown) */}
-          <div className="card">
-            <h3 className="font-semibold text-gray-700 mb-4">Daily Disease Breakdown</h3>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
+        {/* Chart 2: Stacked Bar Chart (Breakdown) */}
+        <div className="card">
+          <h3 className="font-semibold text-gray-700 mb-4">Daily Disease Breakdown</h3>
+          
+            {data.stackedTrends && data.stackedTrends.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data.stackedTrends}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="date" tick={{fontSize: 12}} tickFormatter={(val) => val.split('-').slice(1).join('/')}/>
-                  <YAxis tick={{fontSize: 12}} />
-                  <Tooltip />
-                  <Legend />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <XAxis 
+                    dataKey="date" 
+                    tick={{fontSize: 11, fill: '#6b7280'}} 
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(val) => val.split('-').slice(1).join('/')}
+                  />
+                  <YAxis 
+                    tick={{fontSize: 11, fill: '#6b7280'}} 
+                    axisLine={false} 
+                    tickLine={false} 
+                  />
+                  <Tooltip 
+                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                    // Format tooltip names too!
+                    formatter={(value, name) => [value, formatDiseaseName(name, "")]} 
+                  />
+                  
+                  {/* Styled Legend */}
+                  <Legend 
+                    verticalAlign="top" 
+                    align="right" 
+                    iconType="circle"
+                    iconSize={10}
+                    wrapperStyle={{ paddingBottom: '20px', fontSize: '14px' }}
+                    // This function cleans the text in the legend
+                    formatter={(value) => <span className="text-gray-700 font-medium">{formatDiseaseName(value, "")}</span>}
+                  />
+
                   {data.diseaseKeys.map((key, i) => (
-                    <Bar key={key} dataKey={key} stackId="a" fill={COLORS[i % COLORS.length]} radius={[2, 2, 0, 0]} />
+                    <Bar 
+                      key={key} 
+                      dataKey={key} 
+                      stackId="a" 
+                      fill={getDiseaseColor(key)} 
+                      radius={i === data.diseaseKeys.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]} 
+                    />
                   ))}
                 </BarChart>
               </ResponsiveContainer>
-            </div>*
-          </div>
+              ) : (
+              /* No Data Placeholder */
+              <div className="text-center">
+                <p className="flex items-center justify-center h-full text-gray-500">
+                  No data Available
+                </p>
+                <p className="text-gray-400 text-sm">Make some predictions to see trends</p>
+              </div>
+            )}
+          
         </div>
+      </div>
       
     </div>
   );

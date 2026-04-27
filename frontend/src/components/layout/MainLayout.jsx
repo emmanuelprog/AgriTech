@@ -48,7 +48,10 @@ const MainLayout = ({ children }) => {
                 {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
 
-              <Link to="/" className="flex items-center space-x-2 ml-2 lg:ml-0">
+              <Link 
+                to={user ? "/dashboard" : "/"} 
+                className="flex items-center space-x-2 ml-2 lg:ml-0"
+              >
                 <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
                   <Leaf className="text-white" size={24} />
                 </div>

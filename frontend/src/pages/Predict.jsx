@@ -21,8 +21,10 @@ const Predict = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showCamera, setShowCamera] = useState(false);
   const [showTreatment, setShowTreatment] = useState(false);
+
+  const [Loading, setLoading] = useState(false);
   
-  const { currentPrediction, isLoading, setPrediction, setLoading, setError, setIsSaved, isSaved } = usePredictionStore();
+  const { currentPrediction, isLoading, setPrediction, setIsLoading, setError, setIsSaved, isSaved } = usePredictionStore();
   const { isAuthenticated } = useAuthStore();
 
   const crops = [
@@ -50,7 +52,7 @@ const Predict = () => {
     setError(null);
 
      // Give React a tiny "breath" to re-render the UI before starting the fetch
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // await new Promise(resolve => setTimeout(resolve, 100));
 
 
     try {
@@ -62,17 +64,9 @@ const Predict = () => {
       const result = response.data;
       setPrediction(result);
 
-      // --- CHECK IF ALREADY SAVED ---
-      // Fetch recent history to see if this exact result was just saved
-      const historyRes = await historyAPI.getHistory({ limit: 10 });
-      const alreadySaved = historyRes.data.predictions.some(p => 
-        p.disease === result.prediction.disease && 
-        p.crop === result.crop &&
-        // Optional: check if timestamp is very recent (within last 1 hour)
-        (new Date() - new Date(p.timestamp)) < 3600000 
-      );
       
-      setIsSaved(alreadySaved);
+      
+      setIsSaved(false);
       toast.success('Analysis complete!');
 
     } catch (error) {
@@ -200,10 +194,10 @@ const Predict = () => {
             >
               <button
                 onClick={handleAnalyze}
-                disabled={isLoading}
+                disabled={Loading}
                 className="btn btn-primary w-full py-4 text-lg"
               >
-                {isLoading ? (
+                {Loading ? (
                   <span className="flex items-center justify-center">
                     <div className="spinner mr-3" />
                     Analyzing...
