@@ -92,6 +92,7 @@ def create_app():
     
     # Create database tables
     with app.app_context():
+        db.drop_all()  # Drop existing tables for a clean slate (remove in production!)
         db.create_all()
         print("✓ Database tables created successfully")
     
