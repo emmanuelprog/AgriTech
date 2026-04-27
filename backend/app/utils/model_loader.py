@@ -202,14 +202,14 @@ def get_model_loader():
 
 
         # --- ADD WARMUP LOGIC HERE ---
-        print("🤖 Loading AI model...")
-        print("🔥 Warming up TensorFlow models...")
-        dummy_image = np.zeros((1, 224, 224, 3)) # Blank "fake" image
-        for crop, model in model_loader.models.items():
-            if model is not None:
-                # Run a fake prediction so the first real one is instant
-                model.predict(dummy_image, verbose=0)
-        print("✅ Models are warm and ready for instant prediction!")
+        #print("🤖 Loading AI model...")
+        #print("🔥 Warming up TensorFlow models...")
+        #dummy_image = np.zeros((1, 224, 224, 3)) # Blank "fake" image
+        #for crop, model in model_loader.models.items():
+        #    if model is not None:
+        #        # Run a fake prediction so the first real one is instant
+        #        model.predict(dummy_image, verbose=0)
+        #print("✅ Models are warm and ready for instant prediction!")
 
 
     return model_loader
