@@ -69,6 +69,7 @@ def predict():
         try:
             # Get model loader and make prediction
             loader = get_model_loader()
+
             prediction_result = loader.predict(crop, filepath, top_k=5)
             
             # Load treatment data

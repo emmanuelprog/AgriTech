@@ -4,6 +4,7 @@ backend/__pycache__/
 backend/*.pyc
 backend/.env
 backend/old-requirements.txt
+backend/app/utils/original_model_loader.py
 
 # --- Frontend (React) ---
 frontend/node_modules/

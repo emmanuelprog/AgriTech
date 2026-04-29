@@ -8,6 +8,8 @@ import numpy as np
 from PIL import Image
 import os
 import json
+import gc
+
 
 # Get the absolute path to the 'backend' folder
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,42 +23,50 @@ class ModelLoader:
         self.models_dir = models_dir
         self.models = {}
         self.class_indices = {}
-        self.load_all_models()
+        self.current_crop = None
     
-    def load_all_models(self):
-        """Load all available models at startup"""
-        crops = ['cassava', 'tomato']
+    def get_model(self, crop):
+        """Lazy load model only when needed to save RAM"""
         
-        for crop in crops:
-            try:
-                # Try loading Keras model first
-                model_path = os.path.join(self.models_dir, f'{crop}_model_final.keras')
+        # 1. If requested model is already active, return it
+        if self.current_crop == crop and self.models.get(crop):
+            return self.models[crop], self.class_indices[crop]
+
+        # 2. CLEAR MEMORY: Delete previous model before loading new one
+        if self.current_crop is not None:
+            print(f"♻️ Memory Management: Clearing {self.current_crop} to free RAM...")
+            self.models = {}
+            self.class_indices = {}
+            tf.keras.backend.clear_session()
+            gc.collect()
+
+        # 3. LOAD THE REQUESTED MODEL
+        try:
+            model_path = os.path.join(self.models_dir, f'{crop}_model_final.keras')
+            print(f"🤖 Loading {crop} model into memory...")
+            
+            if os.path.exists(model_path):
+                self.models[crop] = tf.keras.models.load_model(model_path)
+                self.current_crop = crop
                 
-                if os.path.exists(model_path):
-                    print(f"Loading {crop} model from {model_path}")
-                    self.models[crop] = tf.keras.models.load_model(model_path)
-                    
-                    # Load class indices
-                    class_indices_path = os.path.join(self.models_dir, f'{crop}_class_indices.json')
-                    if os.path.exists(class_indices_path):
-                        with open(class_indices_path, 'r') as f:
-                            self.class_indices[crop] = json.load(f)
-                    else:
-                        # Use default class indices if file doesn't exist
-                        self.class_indices[crop] = self._get_default_classes(crop)
-                    
-                    print(f"✓ {crop.title()} model loaded successfully")
-                    print(f"  Classes: {list(self.class_indices[crop].keys())}")
+                # Load indices
+                idx_path = os.path.join(self.models_dir, f'{crop}_class_indices.json')
+                if os.path.exists(idx_path):
+                    with open(idx_path, 'r') as f:
+                        self.class_indices[crop] = json.load(f)
                 else:
-                    print(f"⚠ Warning: {crop} model not found at {model_path}")
-                    print(f"  Using mock predictions for {crop}")
-                    self.models[crop] = None
                     self.class_indices[crop] = self._get_default_classes(crop)
-                    
-            except Exception as e:
-                print(f"❌ Error loading {crop} model: {e}")
-                self.models[crop] = None
-                self.class_indices[crop] = self._get_default_classes(crop)
+                
+                print(f"✅ {crop.title()} ready.")
+                return self.models[crop], self.class_indices[crop]
+            
+            else:
+                print(f"⚠ Warning: {crop} model not found. Using mock.")
+                return None, self._get_default_classes(crop)
+
+        except Exception as e:
+            print(f"❌ Error during lazy load: {e}")
+            return None, self._get_default_classes(crop)
     
     def _get_default_classes(self, crop):
         """Get default class indices for a crop"""
@@ -129,24 +139,29 @@ class ModelLoader:
         Returns:
             Dictionary with prediction results
         """
-        if crop not in self.models:
-            raise ValueError(f"Model for {crop} not available")
+
+        # 1. Ensure the correct model is loaded first
+        model, class_indices = self.get_model(crop)
+
+        # 2. Check if model exists (either real or mock-ready)
+        if crop not in self.class_indices:
+            raise ValueError(f"Class indices for {crop} not available")
         
         # Preprocess image
         img_array = self.preprocess_image(image_file)
         
         # If model is None (mock mode), return mock predictions
-        if self.models[crop] is None:
+        if model is None:
             return self._mock_prediction(crop, top_k)
         
         # Make prediction
-        predictions = self.models[crop].predict(img_array, verbose=0)
+        predictions = model.predict(img_array, verbose=0)
         
         # Get top K predictions
         top_indices = np.argsort(predictions[0])[::-1][:top_k]
         
         # Map indices to class names
-        idx_to_class = {int(v): k for k, v in self.class_indices[crop].items()}
+        idx_to_class = {int(v): k for k, v in class_indices[crop].items()}
         
         results = []
         for idx in top_indices:
@@ -192,24 +207,13 @@ class ModelLoader:
 
 
 # Global model loader instance
-model_loader = None
+model_loader_instance = None
 
 def get_model_loader():
     """Get or create model loader instance"""
-    global model_loader
-    if model_loader is None:
-        model_loader = ModelLoader()
+    global model_loader_instance
+    if model_loader_instance is None:
+        model_loader_instance = ModelLoader()
+        print("🤖 AI System initialized (Lazy Loading enabled)")
 
-
-        # --- ADD WARMUP LOGIC HERE ---
-        #print("🤖 Loading AI model...")
-        #print("🔥 Warming up TensorFlow models...")
-        #dummy_image = np.zeros((1, 224, 224, 3)) # Blank "fake" image
-        #for crop, model in model_loader.models.items():
-        #    if model is not None:
-        #        # Run a fake prediction so the first real one is instant
-        #        model.predict(dummy_image, verbose=0)
-        #print("✅ Models are warm and ready for instant prediction!")
-
-
-    return model_loader
+    return model_loader_instance
