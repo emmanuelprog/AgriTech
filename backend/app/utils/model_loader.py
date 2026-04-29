@@ -161,7 +161,7 @@ class ModelLoader:
         top_indices = np.argsort(predictions[0])[::-1][:top_k]
         
         # Map indices to class names
-        idx_to_class = {int(v): k for k, v in class_indices[crop].items()}
+        idx_to_class = {int(v): k for k, v in class_indices.items()}
         
         results = []
         for idx in top_indices:
